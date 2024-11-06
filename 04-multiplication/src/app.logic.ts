@@ -1,27 +1,23 @@
 import fs from 'fs';
+import { yarg } from './config/plugins/args.plugin';
 
-const multiplicationTable = (base: number) => {
-    // Tabla del 5
-    let table: string = '';
-    // const base: number = 5;
-    const header: string = `
+const { b: base, l: limit, s: show } = yarg;
+
+let table: string = '';
+const header: string = `
 ============================================
                 Tabla del ${base}
 ============================================\n
 `;
 
-    for (let i = 0; i < 101; i++) {
-        table += `${base} x ${i} = ${base * i}\n`;
-    }
-
-    table = header + table;
-
-    // Grabar en un archivo .txt
-    const outputPath = `outputs/tabla-del-${base}`;
-    fs.mkdirSync(outputPath, { recursive: true })
-    fs.writeFileSync(`${outputPath}/tabla-${base}.txt`, table);
+for (let i = 0; i <= limit; i++) {
+    table += `${base} x ${i} = ${base * i}\n`;
 }
 
-for (let index = 0; index < 12; index++) {
-    multiplicationTable(index+1);
-}
+table = header + table;
+if (show) console.log(table)
+
+// Grabar en un archivo .txt
+const outputPath = `outputs`;
+fs.mkdirSync(outputPath, { recursive: true })
+fs.writeFileSync(`${outputPath}/tabla-${base}.txt`, table);
